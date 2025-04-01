@@ -1,6 +1,58 @@
-[gd_scene load_steps=2 format=3 uid="uid://cak2yp3h7q8ai"]
+[gd_scene load_steps=11 format=3 uid="uid://cak2yp3h7q8ai"]
 
 [ext_resource type="Script" path="res://escena_2.gd" id="1_gdi8h"]
+[ext_resource type="Script" path="res://character_body_3d.gd" id="2_wi1a5"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_o3my5"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_c641n"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_t4rw5"]
+
+[sub_resource type="Sky" id="Sky_jahx1"]
+sky_material = SubResource("PanoramaSkyMaterial_t4rw5")
+
+[sub_resource type="Environment" id="Environment_237kt"]
+background_mode = 2
+sky = SubResource("Sky_jahx1")
+ambient_light_color = Color(0.659521, 0.663357, 0.470491, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 6.9
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_11wv6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qrvv1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5dsc8"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_gdi8h")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("2_wi1a5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("SphereShape3D_o3my5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/CollisionShape3D"]
+transform = Transform3D(1.44101, 0, 0, 0, 1.58687, 0, 0, 0, 1.1529, 0, 0, 0)
+mesh = SubResource("SphereMesh_c641n")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0258794, 0.8126, 1.55367)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_237kt")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(17.3176, 0, 0, 0, 0.436268, 0, 0, 0, 13.7178, 0, 0, 0)
+disable_mode = 1
+physics_material_override = SubResource("PhysicsMaterial_11wv6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_qrvv1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D"]
+mesh = SubResource("BoxMesh_5dsc8")
